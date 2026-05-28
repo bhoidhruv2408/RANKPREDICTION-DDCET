@@ -1,0 +1,131 @@
+year,college_name,branch,category,opening_rank,closing_rank,city,college_type
+2024,LDCE Ahmedabad,Computer Engineering,OP,16,165,Ahmedabad,Government
+2024,LDCE Ahmedabad,Information Technology,OP,51,161,Ahmedabad,Government
+2024,LDCE Ahmedabad,Computer Engineering,EW,55,163,Ahmedabad,Government
+2024,LDCE Ahmedabad,Computer Engineering,SEBC,65,163,Ahmedabad,Government
+2024,LDCE Ahmedabad,AI And Machine Learning,OP,163,190,Ahmedabad,Government
+2024,LDCE Ahmedabad,Mechanical Engineering,OP,89,161,Ahmedabad,Government
+2024,LDCE Ahmedabad,Civil Engineering,OP,38,168,Ahmedabad,Government
+2024,LDCE Ahmedabad,EC Engineering,OP,110,146,Ahmedabad,Government
+2024,LDCE Ahmedabad,Chemical Engineering,OP,134,154,Ahmedabad,Government
+2024,Nirma University Ahmedabad,Computer Science & Engineering,OP,93,183,Ahmedabad,Private
+2024,Nirma University Ahmedabad,Computer Science & Engineering,EW,81,162,Ahmedabad,Private
+2024,Nirma University Ahmedabad,Computer Science & Engineering,SEBC,72,156,Ahmedabad,Private
+2024,Nirma University Ahmedabad,Computer Science & Engineering,SC,48,155,Ahmedabad,Private
+2024,Nirma University Ahmedabad,EC Engineering,OP,93,148,Ahmedabad,Private
+2024,Nirma University Ahmedabad,Mechanical Engineering,OP,24,167,Ahmedabad,Private
+2024,Nirma University Ahmedabad,Chemical Engineering,OP,99,115,Ahmedabad,Private
+2024,Nirma University Ahmedabad,Civil Engineering,OP,88,174,Ahmedabad,Private
+2024,VGEC Ahmedabad,Computer Engineering,OP,158,165,Ahmedabad,Government
+2024,VGEC Ahmedabad,Computer Engineering,EW,133,157,Ahmedabad,Government
+2024,VGEC Ahmedabad,Information Technology,OP,157,161,Ahmedabad,Government
+2024,VGEC Ahmedabad,Information Technology,EW,148,157,Ahmedabad,Government
+2024,VGEC Ahmedabad,CSE Data Science,OP,137,157,Ahmedabad,Government
+2024,VGEC Ahmedabad,IC Technology,OP,142,151,Ahmedabad,Government
+2024,VGEC Ahmedabad,Mechanical Engineering,OP,111,135,Ahmedabad,Government
+2024,VGEC Ahmedabad,EC Engineering,OP,89,128,Ahmedabad,Government
+2024,PDEU Gandhinagar,Computer Engineering,OP,149,168,Gandhinagar,Private
+2024,PDEU Gandhinagar,Computer Engineering,EW,121,148,Gandhinagar,Private
+2024,PDEU Gandhinagar,Computer Science Business Systems,OP,126,148,Gandhinagar,Private
+2024,PDEU Gandhinagar,IC Technology,OP,121,156,Gandhinagar,Private
+2024,PDEU Gandhinagar,Mechanical Engineering,OP,80,138,Gandhinagar,Private
+2024,PDEU Gandhinagar,Chemical Engineering,OP,17,117,Gandhinagar,Private
+2024,PDEU Gandhinagar,Civil Engineering,OP,32,127,Gandhinagar,Private
+2024,PDEU Gandhinagar,EC Engineering,OP,51,145,Gandhinagar,Private
+2024,DDU GIA Nadiad,Computer Engineering,OP,163,169,Nadiad,Government
+2024,DDU GIA Nadiad,EC Engineering,OP,105,161,Nadiad,Government
+2024,DDU GIA Nadiad,Chemical Engineering,OP,127,142,Nadiad,Government
+2024,DDU GIA Nadiad,Civil Engineering,OP,92,101,Nadiad,Government
+2024,DDU SFI Nadiad,Computer Engineering,OP,153,157,Nadiad,Private
+2024,DDU SFI Nadiad,Information Technology,OP,138,149,Nadiad,Private
+2024,DDU SFI Nadiad,Chemical Engineering,OP,91,121,Nadiad,Private
+2024,DDU SFI Nadiad,Mechanical Engineering,OP,33,109,Nadiad,Private
+2024,BVM GIA VVNagar,Computer Engineering,OP,153,159,Anand,Government
+2024,BVM GIA VVNagar,Computer Engineering,EW,151,152,Anand,Government
+2024,BVM GIA VVNagar,Electronics Engineering,OP,45,143,Anand,Government
+2024,BVM GIA VVNagar,Mechanical Engineering,OP,110,150,Anand,Government
+2024,BVM GIA VVNagar,Civil Engineering,OP,85,126,Anand,Government
+2024,BVM GIA VVNagar,Electrical Engineering,OP,107,121,Anand,Government
+2024,MSU GIA Vadodara,Computer Science Engineering,OP,159,172,Vadodara,Government
+2024,MSU GIA Vadodara,Computer Science Engineering,EW,156,157,Vadodara,Government
+2024,MSU GIA Vadodara,Information Technology,OP,142,160,Vadodara,Government
+2024,MSU GIA Vadodara,EC Engineering,OP,105,140,Vadodara,Government
+2024,MSU GIA Vadodara,Mechanical Engineering,OP,84,122,Vadodara,Government
+2024,MSU GIA Vadodara,Civil Engineering,OP,64,105,Vadodara,Government
+2024,MSU GIA Vadodara,Chemical Engineering,OP,54,110,Vadodara,Government
+2024,GEC Surat,Computer Engineering,OP,154,165,Surat,Government
+2024,GEC Surat,Computer Engineering,EW,142,159,Surat,Government
+2024,GEC Surat,Information Technology,OP,148,162,Surat,Government
+2024,GEC Surat,EC Engineering,OP,103,148,Surat,Government
+2024,GEC Surat,Mechanical Engineering,OP,86,128,Surat,Government
+2024,GEC Surat,Civil Engineering,OP,70,112,Surat,Government
+2024,GEC Surat,Chemical Engineering,OP,56,108,Surat,Government
+2024,GEC Rajkot,Computer Engineering,OP,150,164,Rajkot,Government
+2024,GEC Rajkot,Computer Engineering,EW,138,155,Rajkot,Government
+2024,GEC Rajkot,Information Technology,OP,145,160,Rajkot,Government
+2024,GEC Rajkot,EC Engineering,OP,100,143,Rajkot,Government
+2024,GEC Rajkot,Mechanical Engineering,OP,82,125,Rajkot,Government
+2024,GEC Rajkot,Civil Engineering,OP,68,109,Rajkot,Government
+2024,GEC Gandhinagar,Computer Engineering,OP,152,162,Gandhinagar,Government
+2024,GEC Gandhinagar,Information Technology,OP,146,158,Gandhinagar,Government
+2024,GEC Gandhinagar,EC Engineering,OP,101,140,Gandhinagar,Government
+2024,GEC Gandhinagar,Mechanical Engineering,OP,80,120,Gandhinagar,Government
+2024,GEC Gandhinagar,Civil Engineering,OP,65,106,Gandhinagar,Government
+2024,GEC Bharuch,Computer Engineering,OP,145,158,Bharuch,Government
+2024,GEC Bharuch,Information Technology,OP,140,155,Bharuch,Government
+2024,GEC Bharuch,EC Engineering,OP,96,138,Bharuch,Government
+2024,GEC Bharuch,Mechanical Engineering,OP,76,118,Bharuch,Government
+2024,GEC Bharuch,Civil Engineering,OP,60,103,Bharuch,Government
+2024,GEC Bharuch,Chemical Engineering,OP,50,100,Bharuch,Government
+2024,GEC Bhavnagar,Computer Engineering,OP,143,156,Bhavnagar,Government
+2024,GEC Bhavnagar,EC Engineering,OP,94,136,Bhavnagar,Government
+2024,GEC Bhavnagar,Mechanical Engineering,OP,74,116,Bhavnagar,Government
+2024,GEC Bhavnagar,Civil Engineering,OP,58,101,Bhavnagar,Government
+2024,GEC Modasa,Computer Engineering,OP,138,152,Modasa,Government
+2024,GEC Modasa,EC Engineering,OP,90,130,Modasa,Government
+2024,GEC Modasa,Mechanical Engineering,OP,70,112,Modasa,Government
+2024,GEC Palanpur,Computer Engineering,OP,135,149,Palanpur,Government
+2024,GEC Palanpur,EC Engineering,OP,87,127,Palanpur,Government
+2024,GEC Palanpur,Mechanical Engineering,OP,67,109,Palanpur,Government
+2024,GEC Patan,Computer Engineering,OP,133,147,Patan,Government
+2024,GEC Patan,EC Engineering,OP,84,124,Patan,Government
+2024,GEC Patan,Mechanical Engineering,OP,64,106,Patan,Government
+2024,GEC Dahod,Computer Engineering,OP,130,144,Dahod,Government
+2024,GEC Dahod,Mechanical Engineering,OP,60,103,Dahod,Government
+2024,GEC Valsad,Computer Engineering,OP,132,146,Valsad,Government
+2024,GEC Valsad,EC Engineering,OP,82,122,Valsad,Government
+2024,GEC Valsad,Mechanical Engineering,OP,62,105,Valsad,Government
+2024,Sarvajanik SCET Surat,Computer Engineering,OP,140,158,Surat,Private
+2024,Sarvajanik SCET Surat,Information Technology,OP,135,154,Surat,Private
+2024,Sarvajanik SCET Surat,EC Engineering,OP,90,132,Surat,Private
+2024,Sarvajanik SCET Surat,Mechanical Engineering,OP,68,110,Surat,Private
+2024,Silver Oak University Ahmedabad,Computer Engineering,OP,130,150,Ahmedabad,Private
+2024,Silver Oak University Ahmedabad,Information Technology,OP,125,146,Ahmedabad,Private
+2024,Silver Oak University Ahmedabad,AI And Machine Learning,OP,120,142,Ahmedabad,Private
+2024,Silver Oak University Ahmedabad,EC Engineering,OP,85,125,Ahmedabad,Private
+2024,Silver Oak University Ahmedabad,Mechanical Engineering,OP,60,100,Ahmedabad,Private
+2024,Parul University Vadodara,Computer Engineering,OP,128,148,Vadodara,Private
+2024,Parul University Vadodara,Information Technology,OP,122,144,Vadodara,Private
+2024,Parul University Vadodara,AI And Machine Learning,OP,115,138,Vadodara,Private
+2024,Parul University Vadodara,EC Engineering,OP,82,120,Vadodara,Private
+2024,Parul University Vadodara,Mechanical Engineering,OP,55,95,Vadodara,Private
+2024,Parul University Vadodara,Civil Engineering,OP,40,85,Vadodara,Private
+2024,CHARUSAT Anand,Computer Engineering,OP,132,152,Anand,Private
+2024,CHARUSAT Anand,Information Technology,OP,126,148,Anand,Private
+2024,CHARUSAT Anand,EC Engineering,OP,88,128,Anand,Private
+2024,CHARUSAT Anand,Mechanical Engineering,OP,65,108,Anand,Private
+2024,GH Patel GCET VVNagar,Computer Engineering,OP,136,156,Anand,Private
+2024,GH Patel GCET VVNagar,Information Technology,OP,130,152,Anand,Private
+2024,GH Patel GCET VVNagar,EC Engineering,OP,92,134,Anand,Private
+2024,GH Patel GCET VVNagar,Mechanical Engineering,OP,70,112,Anand,Private
+2024,Dharmsinh Desai University Nadiad,Computer Engineering,OP,148,166,Nadiad,Private
+2024,Dharmsinh Desai University Nadiad,Information Technology,OP,142,162,Nadiad,Private
+2024,Dharmsinh Desai University Nadiad,EC Engineering,OP,98,140,Nadiad,Private
+2024,SVNIT Surat,Computer Engineering,OP,165,175,Surat,Government
+2024,SVNIT Surat,EC Engineering,OP,140,165,Surat,Government
+2024,SVNIT Surat,Mechanical Engineering,OP,120,155,Surat,Government
+2024,SVNIT Surat,Civil Engineering,OP,100,145,Surat,Government
+2024,SVNIT Surat,Chemical Engineering,OP,80,135,Surat,Government
+2024,VGEC Ahmedabad,Electronics Engineering,OP,95,132,Ahmedabad,Government
+2024,LDCE Ahmedabad,Electronics Engineering,OP,75,145,Ahmedabad,Government
+2024,MSU GIA Vadodara,Electronics Engineering,OP,88,128,Vadodara,Government

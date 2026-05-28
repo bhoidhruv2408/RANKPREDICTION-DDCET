@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Your Prediction — DDQuest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-brand">
+    <span class="brand-dot"></span>
+    <span>DD<strong>Quest</strong></span>
+  </div>
+  <div class="nav-links">
+    <a href="/">Predict</a>
+    <a href="/analytics">Analytics</a>
+    <a href="/admin">Admin</a>
+  </div>
+</nav>
+
+<!-- RANK SUMMARY -->
+<section class="result-hero">
+  <div class="orb orb-1" style="top:-60px;right:-60px"></div>
+  <div class="orb orb-2" style="bottom:-80px;left:-80px"></div>
+
+  <div class="result-summary glass-card">
+    <div class="summary-header">
+      <div>
+        <div class="marks-badge">
+          {{ marks }} marks &nbsp;|&nbsp; {{ category }}
+          {% if branch != 'all' %}&nbsp;|&nbsp; {{ branch }}{% endif %}
+          {% if city != 'all' %}&nbsp;|&nbsp; {{ city }}{% endif %}
+          {% if col_type != 'all' %}&nbsp;|&nbsp; {{ col_type }}{% endif %}
+        </div>
+        <h2>Your Predicted Rank</h2>
+      </div>
+      <div class="summary-actions">
+        <a href="/" class="btn-outline">← New Prediction</a>
+      </div>
+    </div>
+
+    <div class="rank-trio">
+      <div class="rank-box best">
+        <span class="rank-label">Best Case</span>
+        <span class="rank-num">{{ best_rank }}</span>
+        <span class="rank-sub">Rank</span>
+      </div>
+      <div class="rank-box avg highlight">
+        <span class="rank-label">Expected</span>
+        <span class="rank-num">{{ avg_rank }}</span>
+        <span class="rank-sub">Rank</span>
+      </div>
+      <div class="rank-box worst">
+        <span class="rank-label">Worst Case</span>
+        <span class="rank-num">{{ worst_rank }}</span>
+        <span class="rank-sub">Rank</span>
+      </div>
+    </div>
+
+    <div class="rank-bar-wrap">
+      <div class="rank-track">
+        <div class="rank-fill" id="rankFill"></div>
+        <div class="rank-marker" id="rankMarker"></div>
+      </div>
+      <div class="rank-scale">
+        <span>Rank 1</span><span>Rank 5000</span><span>Rank 10000+</span>
+      </div>
+    </div>
+
+    <p class="result-meta">
+      Based on 2024 DDCET cutoff data &nbsp;·&nbsp;
+      <strong>{{ total }}</strong> colleges found for your profile
+    </p>
+  </div>
+</section>
+
+<!-- SEARCH/REFINE BAR (client-side only — not a re-submission) -->
+<section class="filters-bar">
+  <div class="filter-wrap">
+    <input type="text" id="searchBox" placeholder="🔍  Search college or branch…" class="search-input"/>
+    <div class="filter-selects">
+      <select id="filterType" class="select-input mini">
+        <option value="all">All Types</option>
+        <option value="Government">Government</option>
+        <option value="Private">Private</option>
+      </select>
+      <select id="filterCity" class="select-input mini">
+        <option value="all">All Cities</option>
+        {% set cities = [] %}
+        {% for bucket in ['safe','target','dream'] %}
+          {% for c in colleges[bucket] %}
+            {% if c.city not in cities %}
+              {% set _ = cities.append(c.city) %}
+              <option value="{{ c.city }}">{{ c.city }}</option>
+            {% endif %}
+          {% endfor %}
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+</section>
+
+<!-- COLLEGE LISTS -->
+<section class="colleges-section">
+
+  <!-- SAFE -->
+  {% if colleges.safe %}
+  <div class="bucket-heading">
+    <span class="bucket-badge safe-badge">✅ Safe Colleges</span>
+    <span class="bucket-count">{{ colleges.safe|length }}</span>
+  </div>
+  <div class="cards-grid" id="safeCards">
+    {% for c in colleges.safe %}
+    <div class="college-card safe-card"
+         data-college="{{ c.college_name }}"
+         data-branch="{{ c.branch }}"
+         data-type="{{ c.college_type }}"
+         data-city="{{ c.city }}">
+      <div class="card-top">
+        <div class="card-title-group">
+          <div class="card-name">{{ c.college_name }}</div>
+          <div class="card-branch">{{ c.branch }}</div>
+        </div>
+        <span class="type-chip {{ 'gov-chip' if c.college_type == 'Government' else 'pvt-chip' }}">
+          {{ c.college_type }}
+        </span>
+      </div>
+      <div class="card-meta">
+        <span>📍 {{ c.city }}</span>
+        <span>Category: {{ c.category }}</span>
+      </div>
+      <div class="cutoff-row">
+        <div class="cutoff-item">
+          <span class="cutoff-label">Topper Marks</span>
+          <span class="cutoff-val">{{ c.opening_marks }}</span>
+        </div>
+        <div class="cutoff-sep">→</div>
+        <div class="cutoff-item">
+          <span class="cutoff-label">Cutoff Marks</span>
+          <span class="cutoff-val">{{ c.closing_marks }}</span>
+        </div>
+      </div>
+      <div class="chance-row">
+        <div class="chance-meter">
+          <div class="chance-fill safe-fill" style="width:{{ c.chance }}%"></div>
+        </div>
+        <span class="chance-pct">{{ c.chance }}% chance</span>
+      </div>
+      <div class="card-badge safe-badge-sm">SAFE</div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- TARGET -->
+  {% if colleges.target %}
+  <div class="bucket-heading">
+    <span class="bucket-badge target-badge">🎯 Target Colleges</span>
+    <span class="bucket-count">{{ colleges.target|length }}</span>
+  </div>
+  <div class="cards-grid" id="targetCards">
+    {% for c in colleges.target %}
+    <div class="college-card target-card"
+         data-college="{{ c.college_name }}"
+         data-branch="{{ c.branch }}"
+         data-type="{{ c.college_type }}"
+         data-city="{{ c.city }}">
+      <div class="card-top">
+        <div class="card-title-group">
+          <div class="card-name">{{ c.college_name }}</div>
+          <div class="card-branch">{{ c.branch }}</div>
+        </div>
+        <span class="type-chip {{ 'gov-chip' if c.college_type == 'Government' else 'pvt-chip' }}">
+          {{ c.college_type }}
+        </span>
+      </div>
+      <div class="card-meta">
+        <span>📍 {{ c.city }}</span>
+        <span>Category: {{ c.category }}</span>
+      </div>
+      <div class="cutoff-row">
+        <div class="cutoff-item">
+          <span class="cutoff-label">Topper Marks</span>
+          <span class="cutoff-val">{{ c.opening_marks }}</span>
+        </div>
+        <div class="cutoff-sep">→</div>
+        <div class="cutoff-item">
+          <span class="cutoff-label">Cutoff Marks</span>
+          <span class="cutoff-val">{{ c.closing_marks }}</span>
+        </div>
+      </div>
+      <div class="chance-row">
+        <div class="chance-meter">
+          <div class="chance-fill target-fill" style="width:{{ c.chance }}%"></div>
+        </div>
+        <span class="chance-pct">{{ c.chance }}% chance</span>
+      </div>
+      <div class="card-badge target-badge-sm">TARGET</div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- DREAM -->
+  {% if colleges.dream %}
+  <div class="bucket-heading">
+    <span class="bucket-badge dream-badge">🌟 Dream Colleges</span>
+    <span class="bucket-count">{{ colleges.dream|length }}</span>
+  </div>
+  <div class="cards-grid" id="dreamCards">
+    {% for c in colleges.dream %}
+    <div class="college-card dream-card"
+         data-college="{{ c.college_name }}"
+         data-branch="{{ c.branch }}"
+         data-type="{{ c.college_type }}"
+         data-city="{{ c.city }}">
+      <div class="card-top">
+        <div class="card-title-group">
+          <div class="card-name">{{ c.college_name }}</div>
+          <div class="card-branch">{{ c.branch }}</div>
+        </div>
+        <span class="type-chip {{ 'gov-chip' if c.college_type == 'Government' else 'pvt-chip' }}">
+          {{ c.college_type }}
+        </span>
+      </div>
+      <div class="card-meta">
+        <span>📍 {{ c.city }}</span>
+        <span>Category: {{ c.category }}</span>
+      </div>
+      <div class="cutoff-row">
+        <div class="cutoff-item">
+          <span class="cutoff-label">Topper Marks</span>
+          <span class="cutoff-val">{{ c.opening_marks }}</span>
+        </div>
+        <div class="cutoff-sep">→</div>
+        <div class="cutoff-item">
+          <span class="cutoff-label">Cutoff Marks</span>
+          <span class="cutoff-val">{{ c.closing_marks }}</span>
+        </div>
+      </div>
+      <div class="chance-row">
+        <div class="chance-meter">
+          <div class="chance-fill dream-fill" style="width:{{ c.chance }}%"></div>
+        </div>
+        <span class="chance-pct">{{ c.chance }}% chance</span>
+      </div>
+      <div class="card-badge dream-badge-sm">DREAM</div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if total == 0 %}
+  <div class="empty-state glass-card">
+    <div style="font-size:3rem">🔍</div>
+    <h3>No colleges found for this combination</h3>
+    <p>Try removing branch/city/type filters, or select category OP for broader results.</p>
+    <a href="/" class="predict-btn" style="display:inline-block;text-decoration:none;margin-top:1rem">Try Again</a>
+  </div>
+  {% endif %}
+
+</section>
+
+<footer class="footer">
+  <p>DDQuest – DDCET College Predictor AI &nbsp;·&nbsp; Data: ACPC Gujarat 2024 &nbsp;·&nbsp; For reference only</p>
+</footer>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+<script>
+  const avg    = {{ avg_rank }};
+  const maxRnk = 17000;
+  const pct    = Math.min(100, (avg / maxRnk) * 100);
+  document.getElementById('rankFill').style.width  = pct + '%';
+  document.getElementById('rankMarker').style.left = pct + '%';
+
+  const searchBox  = document.getElementById('searchBox');
+  const filterType = document.getElementById('filterType');
+  const filterCity = document.getElementById('filterCity');
+
+  function applyFilters() {
+    const q    = searchBox.value.toLowerCase();
+    const type = filterType.value.toLowerCase();
+    const city = filterCity.value.toLowerCase();
+
+    document.querySelectorAll('.college-card').forEach(card => {
+      const college = (card.dataset.college || '').toLowerCase();
+      const branch  = (card.dataset.branch  || '').toLowerCase();
+      const ctype   = (card.dataset.type    || '').toLowerCase();
+      const ccity   = (card.dataset.city    || '').toLowerCase();
+
+      const matchQ    = !q    || college.includes(q) || branch.includes(q);
+      const matchType = type === 'all' || ctype.includes(type);
+      const matchCity = city === 'all' || ccity.includes(city);
+
+      card.style.display = (matchQ && matchType && matchCity) ? '' : 'none';
+    });
+
+    document.querySelectorAll('.cards-grid').forEach(grid => {
+      const heading = grid.previousElementSibling;
+      const visible = grid.querySelectorAll('.college-card:not([style*="none"])').length;
+      if (heading && heading.classList.contains('bucket-heading')) {
+        heading.style.display = visible ? '' : 'none';
+      }
+    });
+  }
+
+  searchBox.addEventListener('input',   applyFilters);
+  filterType.addEventListener('change', applyFilters);
+  filterCity.addEventListener('change', applyFilters);
+</script>
+</body>
+</html>

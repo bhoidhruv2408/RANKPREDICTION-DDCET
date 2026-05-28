@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin — DDQuest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-brand">
+    <span class="brand-dot"></span>
+    <span>DD<strong>Quest</strong></span>
+  </div>
+  <div class="nav-links">
+    <a href="/">Predict</a>
+    <a href="/analytics">Analytics</a>
+    <a href="/admin" class="active">Admin</a>
+  </div>
+</nav>
+
+<!-- ── ADMIN LOCK SCREEN (shown until correct code entered) ── -->
+<div id="adminLock" class="admin-lock-overlay">
+  <div class="admin-lock-card glass-card">
+    <div class="lock-icon">🔒</div>
+    <h2 class="lock-title">Admin <span class="gradient-text">Access</span></h2>
+    <p class="lock-subtitle">This section is restricted to administrators only.<br/>Enter your admin code to continue.</p>
+    <div class="lock-input-group">
+      <input type="password" id="adminCodeInput" class="lock-input" placeholder="Enter admin code…" maxlength="30"/>
+      <button class="admin-btn accent-btn" onclick="checkAdminCode()">Unlock →</button>
+    </div>
+    <p id="lockError" class="lock-error hidden">❌ Incorrect code. Please try again.</p>
+    <a href="/" class="lock-back">← Back to Predictor</a>
+  </div>
+</div>
+
+<!-- ── ADMIN PANEL (hidden until unlocked) ── -->
+<div id="adminPanel" class="hidden">
+
+<section class="analytics-hero" style="padding-bottom:2rem">
+  <h1 class="hero-title" style="font-size:2.4rem">Admin <span class="gradient-text">Panel</span></h1>
+  <p class="hero-subtitle">Manage datasets, retrain models, update cutoff data.</p>
+  <button onclick="lockAdmin()" class="lock-btn">🔒 Lock Panel</button>
+</section>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="flash-container">
+      {% for cat, msg in messages %}
+        <div class="flash flash-{{cat}}">{{msg}}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<section class="admin-section">
+
+  <!-- Stats -->
+  <div class="admin-stats">
+    <div class="stat-card glass-card">
+      <div class="stat-num">{{ stats.rank_rows }}</div>
+      <div class="stat-label">Rank Dataset Rows</div>
+    </div>
+    <div class="stat-card glass-card">
+      <div class="stat-num">{{ stats.cutoff_rows }}</div>
+      <div class="stat-label">Cutoff Dataset Rows</div>
+    </div>
+    <div class="stat-card glass-card">
+      <div class="stat-num">{{ stats.colleges }}</div>
+      <div class="stat-label">Unique Colleges</div>
+    </div>
+    <div class="stat-card glass-card">
+      <div class="stat-num {{ 'green' if stats.model_loaded else 'red' }}">
+        {{ '✅' if stats.model_loaded else '❌' }}
+      </div>
+      <div class="stat-label">Model Status</div>
+    </div>
+  </div>
+
+  <div class="admin-grid">
+
+    <!-- Upload Marks vs Rank -->
+    <div class="admin-card glass-card">
+      <h3>📤 Upload Marks-vs-Rank CSV</h3>
+      <p>Replace <code>marks_vs_rank.csv</code> with a new file.<br/>
+         Required columns: <code>year, marks, category, rank</code></p>
+      <form action="/upload" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="file_type" value="rank"/>
+        <input type="file" name="file" accept=".csv" class="file-input" required/>
+        <button type="submit" class="admin-btn">Upload Dataset</button>
+      </form>
+    </div>
+
+    <!-- Upload Cutoff -->
+    <div class="admin-card glass-card">
+      <h3>📤 Upload Cutoff CSV</h3>
+      <p>Replace <code>ddcet_cutoff.csv</code> with a new file.<br/>
+         Required columns: <code>year, college_name, branch, category, opening_rank, closing_rank, city, college_type</code></p>
+      <form action="/upload" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="file_type" value="cutoff"/>
+        <input type="file" name="file" accept=".csv" class="file-input" required/>
+        <button type="submit" class="admin-btn">Upload Cutoff</button>
+      </form>
+    </div>
+
+    <!-- Retrain -->
+    <div class="admin-card glass-card">
+      <h3>🤖 Retrain ML Model</h3>
+      <p>Retrain the Random Forest model using the current <code>marks_vs_rank.csv</code> dataset. This may take 10–30 seconds.</p>
+      <form action="/retrain" method="POST"
+            onsubmit="this.querySelector('button').textContent='Training…'; this.querySelector('button').disabled=true;">
+        <button type="submit" class="admin-btn accent-btn">Retrain Model Now</button>
+      </form>
+    </div>
+
+    <!-- Dataset info -->
+    <div class="admin-card glass-card">
+      <h3>📋 Dataset Information</h3>
+      <table class="info-table">
+        <tr><td>Years available</td><td><strong>{{ stats.years | join(', ') }}</strong></td></tr>
+        <tr><td>Categories</td><td><strong>{{ stats.categories | join(', ') }}</strong></td></tr>
+        <tr><td>Rank rows</td><td><strong>{{ stats.rank_rows }}</strong></td></tr>
+        <tr><td>Cutoff rows</td><td><strong>{{ stats.cutoff_rows }}</strong></td></tr>
+        <tr><td>Colleges</td><td><strong>{{ stats.colleges }}</strong></td></tr>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<footer class="footer">
+  <p>DDQuest — Admin Panel</p>
+</footer>
+
+</div><!-- /adminPanel -->
+
+<script>
+const ADMIN_CODE = "DDQuest@121";
+
+function checkAdminCode() {
+  const val = document.getElementById("adminCodeInput").value;
+  if (val === ADMIN_CODE) {
+    sessionStorage.setItem("ddquest_admin_unlocked", "1");
+    document.getElementById("adminLock").style.display = "none";
+    document.getElementById("adminPanel").classList.remove("hidden");
+  } else {
+    document.getElementById("lockError").classList.remove("hidden");
+    document.getElementById("adminCodeInput").value = "";
+    document.getElementById("adminCodeInput").focus();
+  }
+}
+
+function lockAdmin() {
+  sessionStorage.removeItem("ddquest_admin_unlocked");
+  document.getElementById("adminLock").style.display = "flex";
+  document.getElementById("adminPanel").classList.add("hidden");
+  document.getElementById("adminCodeInput").value = "";
+  document.getElementById("lockError").classList.add("hidden");
+}
+
+// Auto-unlock if session still valid
+if (sessionStorage.getItem("ddquest_admin_unlocked") === "1") {
+  document.getElementById("adminLock").style.display = "none";
+  document.getElementById("adminPanel").classList.remove("hidden");
+}
+
+// Allow Enter key in password field
+document.getElementById("adminCodeInput").addEventListener("keydown", function(e) {
+  if (e.key === "Enter") checkAdminCode();
+});
+
+// If flash messages exist, admin was already authenticated server-side action, show panel
+{% with messages = get_flashed_messages() %}{% if messages %}
+if (sessionStorage.getItem("ddquest_admin_unlocked") !== "1") {
+  sessionStorage.setItem("ddquest_admin_unlocked","1");
+  document.getElementById("adminLock").style.display="none";
+  document.getElementById("adminPanel").classList.remove("hidden");
+}
+{% endif %}{% endwith %}
+</script>
+</body>
+</html>

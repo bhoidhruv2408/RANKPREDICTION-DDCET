@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Analytics — DDQuest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-brand">
+    <span class="brand-dot"></span>
+    <span>DD<strong>Quest</strong></span>
+  </div>
+  <div class="nav-links">
+    <a href="/">Predict</a>
+    <a href="/analytics" class="active">Analytics</a>
+    <a href="/admin">Admin</a>
+  </div>
+</nav>
+
+<section class="analytics-hero">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-3"></div>
+  <h1 class="hero-title" style="font-size:2.8rem">DDCET <span class="gradient-text">Analytics</span></h1>
+  <p class="hero-subtitle" style="max-width:560px;margin:0 auto 2rem">
+    Historical trends, rank distributions, and college data visualized.
+  </p>
+</section>
+
+<section class="charts-section">
+
+  <!-- Scatter: Marks vs Rank -->
+  <div class="chart-card glass-card">
+    <h3 class="chart-title">📈 Marks vs Rank (OP Category)</h3>
+    <p class="chart-sub">Higher marks → better (lower) rank. Data from 2022–2024.</p>
+    <canvas id="scatterChart" height="320"></canvas>
+  </div>
+
+  <!-- Category Distribution -->
+  <div class="chart-card glass-card half">
+    <h3 class="chart-title">🏷️ Category Distribution (2024)</h3>
+    <canvas id="catChart" height="280"></canvas>
+  </div>
+
+  <!-- Gov vs Private -->
+  <div class="chart-card glass-card half">
+    <h3 class="chart-title">🏛️ Government vs Private</h3>
+    <canvas id="typeChart" height="280"></canvas>
+  </div>
+
+  <!-- Branch Demand -->
+  <div class="chart-card glass-card">
+    <h3 class="chart-title">🔬 Top Branches by Seat Entries</h3>
+    <canvas id="branchChart" height="320"></canvas>
+  </div>
+
+  <!-- City distribution -->
+  <div class="chart-card glass-card">
+    <h3 class="chart-title">🏙️ Colleges by City</h3>
+    <canvas id="cityChart" height="280"></canvas>
+  </div>
+
+</section>
+
+<footer class="footer">
+  <p>DDQuest – DDCET College Predictor AI &nbsp;·&nbsp; Analytics based on 2022–2024 ACPC data</p>
+</footer>
+
+<script src="{{ url_for('static', filename='charts.js') }}"></script>
+<script>
+const scatterRaw  = {{ scatter_data|safe }};
+const catCounts   = {{ cat_counts|safe }};
+const branchCounts= {{ branch_counts|safe }};
+const typeCounts  = {{ type_counts|safe }};
+const cityCounts  = {{ city_counts|safe }};
+
+Chart.defaults.color = '#a0aec0';
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+
+const COLORS = ['#6366f1','#8b5cf6','#a78bfa','#c4b5fd','#ddd6fe','#ede9fe','#f5f3ff','#818cf8'];
+const GRAD1  = ['rgba(99,102,241,0.85)','rgba(139,92,246,0.85)','rgba(167,139,250,0.75)'];
+
+// ── 1. Scatter chart ──────────────────────────────────────────────────────
+const scatterDatasets = Object.entries(scatterRaw).map(([yr, pts], i) => ({
+  label: `${yr}`,
+  data: pts.map(([x, y]) => ({ x, y })),
+  backgroundColor: COLORS[i] + 'cc',
+  pointRadius: 3
+}));
+
+new Chart(document.getElementById('scatterChart'), {
+  type: 'scatter',
+  data: { datasets: scatterDatasets },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: true } },
+    scales: {
+      x: { title: { display: true, text: 'Marks', color: '#a0aec0' },
+           grid: { color: 'rgba(255,255,255,0.05)' } },
+      y: { title: { display: true, text: 'Rank', color: '#a0aec0' },
+           grid: { color: 'rgba(255,255,255,0.05)' },
+           reverse: false }
+    }
+  }
+});
+
+// ── 2. Category doughnut ──────────────────────────────────────────────────
+new Chart(document.getElementById('catChart'), {
+  type: 'doughnut',
+  data: {
+    labels: Object.keys(catCounts),
+    datasets: [{ data: Object.values(catCounts), backgroundColor: COLORS }]
+  },
+  options: { responsive: true, plugins: { legend: { position: 'right' } } }
+});
+
+// ── 3. Gov vs Private pie ─────────────────────────────────────────────────
+new Chart(document.getElementById('typeChart'), {
+  type: 'pie',
+  data: {
+    labels: Object.keys(typeCounts),
+    datasets: [{ data: Object.values(typeCounts),
+                 backgroundColor: ['#6366f1','#f59e0b'] }]
+  },
+  options: { responsive: true, plugins: { legend: { position: 'right' } } }
+});
+
+// ── 4. Branch bar ─────────────────────────────────────────────────────────
+new Chart(document.getElementById('branchChart'), {
+  type: 'bar',
+  data: {
+    labels: Object.keys(branchCounts),
+    datasets: [{
+      label: 'Seat Entries',
+      data: Object.values(branchCounts),
+      backgroundColor: COLORS.slice(0, Object.keys(branchCounts).length)
+    }]
+  },
+  options: {
+    responsive: true,
+    indexAxis: 'y',
+    plugins: { legend: { display: false } },
+    scales: { x: { grid: { color: 'rgba(255,255,255,0.05)' } },
+              y: { grid: { color: 'rgba(255,255,255,0.05)' } } }
+  }
+});
+
+// ── 5. City bar ───────────────────────────────────────────────────────────
+new Chart(document.getElementById('cityChart'), {
+  type: 'bar',
+  data: {
+    labels: Object.keys(cityCounts),
+    datasets: [{
+      label: 'Entries',
+      data: Object.values(cityCounts),
+      backgroundColor: COLORS
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false } },
+    scales: { x: { grid: { color: 'rgba(255,255,255,0.05)' } },
+              y: { grid: { color: 'rgba(255,255,255,0.05)' } } }
+  }
+});
+</script>
+</body>
+</html>
